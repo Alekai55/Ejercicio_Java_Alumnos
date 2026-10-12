@@ -18,6 +18,16 @@ public class Alumnos {
 
             String linea;
 
+            int total = 0;
+            int aprobados = 0;
+            int suspensos = 0;
+            double sumaNotas = 0;
+            double notaMaxima = -1; //con ayuda de la IA me explicó que de esta forma se controla que al introducir
+            double notaMinima = 11; //notas nuevas, estén siempre entre el máximo y el mínimo
+            String alumnosNotaMaxima = "";
+            String alumnosNotaMinima = "";
+
+
             while ((linea = lector.readLine()) != null){
                 String[] datos = linea.split(";");
 
@@ -30,14 +40,36 @@ public class Alumnos {
                String resultado;
                String ruta;
 
+               //Agregado sumatorio de notas
+               total++;
+               sumaNotas += notaNumero;
+
+               if(notaNumero > notaMaxima) {
+                   notaMaxima = notaNumero;
+                   alumnosNotaMaxima = nombre + " " + apellido;
+               } else if (notaNumero == notaMaxima) {
+                   alumnosNotaMaxima += " " + nombre + " " + apellido;
+               }
+
+               if(notaNumero < notaMinima) {
+                   notaMinima = notaNumero;
+                   alumnosNotaMinima = nombre + " " + apellido;
+               } else if (notaNumero == notaMinima) {
+                   alumnosNotaMinima += " " + nombre + " " + apellido;
+
+               }
+
                 if(notaNumero >= 5){
                     resultado = "Aprobado";
                     System.out.println("Está aprobado/a");
                     ruta = "GestionAcademica/expedientes/aprobados/" + nombre + "_" + apellido + ".txt";
+                    //añado suma de los aprobados y suspensos
+                    aprobados++;
                 } else {
                     resultado = "Suspenso";
                     System.out.println("Está suspenso/a");
                     ruta = "GestionAcademica/expedientes/suspensos/" + nombre + "_" + apellido + ".txt";
+                    suspensos++;
                 }
 
                 BufferedWriter escritor = new BufferedWriter(new FileWriter(ruta));
@@ -55,6 +87,32 @@ public class Alumnos {
                 escritor.close();
 
             }
+            //Añado cálculo de la media fuera del bucle While
+
+            double media = sumaNotas / total;
+
+            BufferedWriter informe = new BufferedWriter(
+                    new FileWriter("GestionAcademica/informes/resumen.txt")
+            );
+
+            informe.write("Total de alumnos: " + total);
+            informe.newLine();
+            informe.write("Aprobados: " + aprobados);
+            informe.newLine();
+            informe.write("Suspensos: " + suspensos);
+            informe.newLine();
+            informe.write("Nota media: " + media);
+            informe.newLine();
+            informe.write("Nota más alta: " + notaMaxima);
+            informe.newLine();
+            informe.write("Alumno(s) con la nota más alta: " + alumnosNotaMaxima);
+            informe.newLine();
+            informe.write("Nota más baja: " + notaMinima);
+            informe.newLine();
+            informe.write("Alumno(s) con la nota más baja: " + alumnosNotaMinima);
+
+            informe.close();
+
             lector.close();
 
         } catch (IOException e) {
