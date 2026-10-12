@@ -10,5 +10,6 @@ public class EjercicioFicheros {
     CrearEstructura.generarEstructura();
     alumnos.alumnos();
     CopiaDeSeguridad.realizarBackup();
+    ComprobacionFinal.comprobar();
     }
 }
