@@ -114,11 +114,27 @@ public class Alumnos {
             informe.close();
 
             lector.close();
+            guardarHistorico(total, aprobados, suspensos);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
     }
+    public void guardarHistorico(int total, int aprobados, int suspensos) {
+        try {
+            BufferedWriter escritor = new BufferedWriter(
+                    new FileWriter("GestionAcademica/informes/historico.txt", true)
+            );
+
+            escritor.write("Alumnos procesados: " + total
+                    + ", aprobados: " + aprobados
+                    + ", suspensos: " + suspensos);
+            escritor.newLine();
+            escritor.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
