@@ -10,6 +10,5 @@ public class EjercicioFicheros {
     CrearEstructura.generarEstructura();
     alumnos.alumnos();
     CopiaDeSeguridad.realizarBackup();
-    alumnos.guardarHistorico();
     }
 }
